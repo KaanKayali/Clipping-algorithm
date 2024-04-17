@@ -10,11 +10,18 @@ If you are working with a 3D engine, most of this is already done for you, but i
 Clipping can be done with a few mathematical equations, which are explained in this file.
 
 ## How it works
-The way it works is not as difficult at it seems. There may be many different triangles which need to go through the same process. Usually every vertex of triangle has its own id and its own x and y coordinate. At this time all of its data should be given before clipping.<br />
+The way it works is not as difficult as it seems. There can be many different triangles that need to go through the same process. Usually all 3 vertices of a triangle have their own id and their own x and y coordinates. At this point, all their data should be given before clipping.<br />
 <img height="200px" src="/images/screenshot5.png"/>
 <img height="200px" src="/images/screenshot8.png"/> 
 
-In pseudocode each vertex/point of a triangle gets checked if its inside or outside of any border. That means with a simple for-loop which loops thorugh every triangle we can store the points which are outside into one list and the points which are on the inside into another list. This way we get as a result the following 4 cases:
+In pseudocode, each vertex/point of a triangle is checked to see if it is inside or outside any boundary. A simple for-loop can store points inside and outside triangles. This gives four cases:<br />
 
-1. Case
-<img height="300px" src="/images/screenshot18.png"/> 
+1. Each vertex is inside the screen. In this case, the whole triangle is rendered.<br />
+2. Each vertex is outside the screen. In this case, the whole triangle is removed.<br />
+3. Two vertexes are inside of the screen. In this case, this triangle needs to get clipped. It returns a quad. In other words: **two** new triangles.<br />
+4. Only a single vertex is inside the screen. In this case, this triangle needs to get clipped. It returns **one** new triangle.<br />
+
+<img width="600px" src="/images/screenshot2.png"/> <br />
+<img width="600px" src="/images/screenshot6.png"/> <br />
+
+
