@@ -58,8 +58,17 @@ In this example we end up with 8 triangles that need to be drawn.
 <br />
 
 # How to implement
-Even though we know how the process works, we still don't know exactly how clipping works. Although it is clear how the process works, it is not yet clear exactly how the clipping works. In order to implement it, it is necessary to check at each edge which case the triangle applies to. It must be handled differently on each case. As the first two cases show the triangle completely or not at all, this is easier to handle and will be ignored here for the time being.<br />
+Even though we know how the process works, we still don't know exactly how clipping works. Although it is clear how the process works, it is not yet clear exactly how the clipping works. In order to implement it, it is necessary to check at each edge which case the triangle applies to. It must be handled differently on each case. So the first step is to count the points that are inside and count those that are outside. How many are on the outside is actually the number of points on the inside subtracted from three. Each triangle has 3 points.
+Since we would have to query the same thing for each of the 3 points **(0, 1, 2)**, the points that are inside are temporarily stored in a separate list and the points that are outside are temporarily stored in a separate list. This makes it easier to work with the coordinates of each point. This short process can be seen in the script and will be demonstrated later in an example code. 
+As the first two cases show the triangle completely or not at all, this is easier to handle and will be ignored here for the time being.<br />
+<br />
+
+
 <br />
 Let's look at the cases where only one or two points of the triangle lie within the screen.
 
+## 1 Vertex inside
+1 Vertex inside means 2 vertexes outside. 
+If there is only 1 point inside the screen, we calculate 2 new points that are just on the edge of the screen, so we form a new triangle with them.
+The point which is inside can be taken over. The remaining points are ignored after the new two are calculated.
 
