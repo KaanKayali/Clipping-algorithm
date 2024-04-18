@@ -108,3 +108,7 @@ Now we solve for the unknown y-value and we have the equation to calculate the n
 
 Theoretically, in the case of a vertex inside, it looks something like this when calculating the point:
 <img height="250px" src="/images/screenshot9.png"/> <br />
+<br />
+
+# Code
+
