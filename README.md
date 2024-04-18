@@ -111,4 +111,36 @@ Theoretically, in the case of a vertex inside, it looks something like this when
 <br />
 
 ## Code
+The clipping-algorithm itself is just in the function. Gamemaker behandelt Arrays wie C# Listen. Sie sind beliebig vergrösser oder verkleinerbar je nach Anzahl gegebenen Werten. Ein Dreieck kann als Objekt, als Struct, als Array (Skalierbar) oder als Liste gespeichert werden.
+Jedes Dreieck hat genau 3 Punkte, somit 3 x und y Werte. Ein Beispieldreieck in meinem Code sieht so aus:
+```
+//Array in gamemaker
+exampletriangle = [
+	[300, 300],
+	[700, 500],
+	[200, 600],
+];
+```
+Als struct würde es übersehlicher sein, aber bei der Benutzung eines Structes ist es nicht möglich in Gamemaker durch die Werte durch zu loopen:
+```
+//Struct
+exampletriangle = {
+	point0 : {
+		x : 300,
+		y : 300
+	},
+	point1 : {
+		x : 700,
+		y : 500
+	},
+	point2 : {
+		x : 200,
+		y : 600
+	},
+	
+};
 
+```
+
+<img height="250px" src="/images/screenshot16.png"/> <br />
+<img height="250px" src="/images/screenshot17.png"/> <br />
