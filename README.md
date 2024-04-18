@@ -64,7 +64,7 @@ As the first two cases show the triangle completely or not at all, this is easie
 <br />
 <img height="250px" src="/images/screenshot21.png"/> <br />
 Clipping means that we take two new calculated coordinates and connect the inner points to these new calculated points instead of the outer points.
-These are calculated using [linear interpolation](#linear-interpolation).
+These are calculated using [linear interpolation](#linear-interpolation).<br />
 <br />
 Let's look at the cases where only one or two points of the triangle lie within the screen.
 
