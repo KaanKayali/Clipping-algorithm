@@ -62,7 +62,9 @@ Even though we know how the process works, we still don't know exactly how clipp
 Since we would have to query the same thing for each of the 3 points **(0, 1, 2)**, the points that are inside are temporarily stored in a separate list and the points that are outside are temporarily stored in a separate list. This makes it easier to work with the coordinates of each point. This short process can be seen in the script and will be demonstrated later in an example code. 
 As the first two cases show the triangle completely or not at all, this is easier to handle and will be ignored here for the time being.<br />
 <br />
-
+<img height="250px" src="/images/screenshot21.png"/> <br />
+Clipping means that we take two new calculated coordinates and connect the inner points to these new calculated points instead of the outer points.
+These are calculated using [linear interpolation](#linear-interpolation)
 
 <br />
 Let's look at the cases where only one or two points of the triangle lie within the screen.
@@ -71,4 +73,12 @@ Let's look at the cases where only one or two points of the triangle lie within 
 1 Vertex inside means 2 vertexes outside. 
 If there is only 1 point inside the screen, we calculate 2 new points that are just on the edge of the screen, so we form a new triangle with them.
 The point which is inside can be taken over. The remaining points are ignored after the new two are calculated.
+<img height="250px" src="/images/screenshot19.png"/> <br />
 
+## 2 Vertexes inside
+2 Vertex inside means 1 vertex outside. 
+If there are two points inside of the screen, we calculate 2 new points that are just on the edge of the screen, so we form a new quad with them. Since each shape is divided into triangles, the quad is divided into two triangles.
+The two points which are inside can be taken over. The remaining point can be ignored after the new two are calculated.
+<img height="250px" src="/images/screenshot20.png"/> <br />
+
+# Linear interpolation
