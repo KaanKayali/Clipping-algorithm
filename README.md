@@ -41,19 +41,25 @@ Loop through trianglelist
 		
 
 In pseudocode, each vertex/point of a triangle is checked to see if it is inside or outside any boundary. A simple for-loop can store points inside and outside triangles. This gives four cases:<br />
-
-1. Each vertex is inside the screen. In this case, the whole triangle is rendered.<br />
-2. Each vertex is outside the screen. In this case, the whole triangle is removed.<br />
-3. Two vertexes are inside of the screen. In this case, this triangle needs to get clipped. It returns a quad. In other words: **two** new triangles.<br />
-4. Only a single vertex is inside the screen. In this case, this triangle needs to get clipped. It returns **one** new triangle.<br />
+* **3** points is inside the screen. In this case, the whole triangle is rendered.<br />
+* **0** points is inside the screen. In this case, the whole triangle is removed.<br />
+* **2** points are inside of the screen. In this case, this triangle needs to get clipped. It returns a quad. In other words: **two** new triangles.<br />
+* **1** point is inside the screen. In this case, this triangle needs to get clipped. It returns **one** new triangle.<br />
 
 <img width="600px" src="/images/screenshot2.png"/> <br />
 <img width="600px" src="/images/screenshot6.png"/> <br />
 
 This sounds simple enough. But what if a single triangle is so large that it applies to multiple cases at once.<br />
 To address this issue, we repeat the clipping process for every triangle that remains after the initial clipping. The order in which we cut the edges of a triangle is key here. After clipping at one border, each resulting triangle goes through the same process at the next border. This continues until all borders have been processed. By doing this, we end up with a new set of triangles that should be rendered, improving how we determine which ones are visible on the screen.<br />
+<br />
 <img height="250px" src="/images/screenshot3.png"/> <br />
 <img height="250px" src="/images/screenshot4.png"/> <br />
 In this example we end up with 8 triangles that need to be drawn.
 <br />
+
+# How to implement
+Even though we know how the process works, we still don't know exactly how clipping works. Although it is clear how the process works, it is not yet clear exactly how the clipping works. In order to implement it, it is necessary to check at each edge which case the triangle applies to. It must be handled differently on each case. As the first two cases show the triangle completely or not at all, this is easier to handle and will be ignored here for the time being.<br />
+<br />
+Let's look at the cases where only one or two points of the triangle lie within the screen.
+
 
