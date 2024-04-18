@@ -63,23 +63,28 @@ Since we would have to query the same thing for each of the 3 points **(0, 1, 2)
 As the first two cases show the triangle completely or not at all, this is easier to handle and will be ignored here for the time being.<br />
 <br />
 <img height="250px" src="/images/screenshot21.png"/> <br />
+<br />
 Clipping means that we take two new calculated coordinates and connect the inner points to these new calculated points instead of the outer points.
 These are calculated using [linear interpolation](#linear-interpolation).<br />
 <br />
-Let's look at the cases where only one or two points of the triangle lie within the screen.
-
+Let's look at the cases where only one or two points of the triangle lie within the screen.<br />
+<br />
 ## 1 Vertex inside
 1 Vertex inside means 2 vertexes outside. 
 If there is only 1 point inside the screen, we calculate 2 new points that are just on the edge of the screen, so we form a new triangle with them.
 The point which is inside can be taken over. The remaining points are ignored after the new two are calculated using linear interpolation.<br />
-<img height="250px" src="/images/screenshot19.png"/> <img height="250px" src="/images/screenshot7.png"/> <br />
+<img height="200px" src="/images/screenshot19.png"/> <img height="200px" src="/images/screenshot7.png"/> <br />
+<br />
+Calculation in practice:<br />
 <img height="250px" src="/images/screenshot10.png"/><br />
-
+<br />
 ## 2 Vertexes inside
 2 Vertex inside means 1 vertex outside. 
 If there are two points inside of the screen, we calculate 2 new points that are just on the edge of the screen, so we form a new quad with them. Since each shape is divided into triangles, the quad is divided into two triangles.
 The two points which are inside can be taken over. The remaining point can be ignored after the new two are calculated.<br />
-<img height="250px" src="/images/screenshot20.png"/> <br />
+<img height="250px" src="/images/screenshot20.png"/><br />
+<br />
+Calculation in practice:<br />
 <img height="250px" src="/images/screenshot11.png"/><br />
 <br />
 
@@ -90,11 +95,11 @@ Following my recommendation, we have two lists. The first list contains all the 
 To calculate the vertex on the edge we should have both of the connecting points inside and outside the border. The point on the edge already has either the x or the y value, based on the border it lies on.
 For example, if it is at the right or left edge, the x component is either the screen width or 0 (assuming the origin 0/0 is at the top or bottom right).
 The line connecting the first two points is similar to the line that would connect the new points. A simple equation can therefore be created using similarity. The horizontal length of the two points can be calculated using the x values of the inner and outer points. Do the same with the y values for the vertical length. Now we can do the same with the same point on the inside and the point on the edge, where we only know either the x or the y value. In this case, the value is the width of the screen, since we are working with the right edge in this example. However, as we do not know the y value, it is the only value that is unknown and the variable remains.<br />
-<img height="250px" src="/images/screenshot13.png"/> <br />
-
-In vertical examples the new vertex is either 0 or the value of the screen height. So in clipping the other variable is the value to calculate in every case.
+<img height="200px" src="/images/screenshot13.png"/> <br />
+<br />
+In vertical examples the new vertex is either 0 or the value of the screen height. So in clipping the other variable is the value to calculate in every case.<br />
 <img height="250px" src="/images/screenshot12.png"/> <br />
-
+<br />
 Similarity can now be used to equate the two calculated values. For example, the horizontal length between the first original points divided by the vertical length between the first original points equals the horizontal length between the inner point and the point to be recalculated divided by the vertical length between the inner point and the point to be recalculated.<br />
 <img height="250px" src="/images/screenshot14.png"/> <br />
 
