@@ -240,6 +240,8 @@ if(triangleToClip[0][0] >= buffer) array_push(insidePoints, triangleToClip[0]); 
 if(triangleToClip[1][0] >= buffer) array_push(insidePoints, triangleToClip[1]); else array_push(outsidePoints, triangleToClip[1]);
 if(triangleToClip[2][0] >= buffer) array_push(insidePoints, triangleToClip[2]); else array_push(outsidePoints, triangleToClip[2]);
 ```
+If you want to check if it is inside at every border, you need to incooperate the buffer everywhere.<br />
+<img height="450px" src="/images/screenshot24.png"/><br />
 
 You now need to check for every possible scenario a triangle could be in.
 
@@ -287,5 +289,18 @@ if(array_length(insidePoints) == 2) && (array_length(outsidePoints) == 1){
 }
 
 ```
+The array at the end of this process now needs to be checked for the next edge using the next for loop. For visualisation, the if-statements on each of the edges look like this:
+
+Left: if point.x >= buffer <br />
+<img height="200px" src="/images/screenshot25.png"/><br />
+
+Top: if point.y >= buffer <br />
+<img height="200px" src="/images/screenshot27.png"/><br />
+
+Right: if point.x <= scrwidth-buffer <br />
+<img height="200px" src="/images/screenshot26.png"/><br />	
+
+Bottom: if point.y <= scrheight-buffer <br />
+<img height="200px" src="/images/screenshot28.png"/><br />
 
 <img height="200px" src="/images/screenshot16.png"/> <img height="200px" src="/images/screenshot17.png"/> <br />
