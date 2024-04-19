@@ -289,18 +289,22 @@ if(array_length(insidePoints) == 2) && (array_length(outsidePoints) == 1){
 }
 
 ```
-The array at the end of this process now needs to be checked for the next edge using the next for loop. For visualisation, the if-statements on each of the edges look like this:
+The array at the end of this process now needs to be checked for the next edge using the next for loop. <br />
+For visualisation, the if-statements on each of the edges look like this:
 
-Left: if point.x >= buffer <br />
-<img height="200px" src="/images/screenshot25.png"/><br />
+If the point is after those checks always true, it is inside the screen.
+If it is false in one of those, its not.
 
-Top: if point.y >= buffer <br />
-<img height="200px" src="/images/screenshot27.png"/><br />
+Left: `if point.x >= buffer` <br />
+<img height="250px" src="/images/screenshot25.png"/><br />
 
-Right: if point.x <= scrwidth-buffer <br />
-<img height="200px" src="/images/screenshot26.png"/><br />	
+Top: `if point.y >= buffer` <br />
+<img height="250px" src="/images/screenshot27.png"/><br />
 
-Bottom: if point.y <= scrheight-buffer <br />
-<img height="200px" src="/images/screenshot28.png"/><br />
+Right: `if point.x <= scrwidth-buffer` <br />
+<img height="250px" src="/images/screenshot26.png"/><br />	
+
+Bottom: ``if point.y <= scrheight-buffer`` <br />
+<img height="250px" src="/images/screenshot28.png"/><br />
 
 <img height="200px" src="/images/screenshot16.png"/> <img height="200px" src="/images/screenshot17.png"/> <br />
