@@ -113,6 +113,14 @@ Theoretically, in the case of a vertex inside, it looks something like this when
 <br />
 
 ## Code
+It is essential to define your border so your program knows where it should clip.
+In gamemaker the origin is again at the top left.<br />
+screen width: 1280
+screen height: 720
+<br />
+<img height="200px" src="/images/screenshot22.png"/><br />
+<br />
+
 The clipping algorithm itself is just in the function. Gamemaker treats arrays like C# lists. They can be enlarged or reduced as required depending on the number of given values. A triangle can be saved as an object, as a struct, as an array (scalable) or as a list.
 Each triangle has exactly 3 points, thus 3 `x` and `y` values. A sample triangle in my code looks like this:
 ```
@@ -194,6 +202,13 @@ function clipTriangle(triangle) {
 }
 ```
 
+It can be confusing to have so many lists or arrays inside each other. To have an overview of how a triangle, a point and the cooridants can be called, here are examples:
+<br />
+Triangle: `displayTriangles[0] //There could be any number`
+Point: `displayTriangles[0][0] //Point with the ID 0 of this specific triangle`
+x-value: `displayTriangles[0][0][0] //x-value of the Point with the ID 0`
+y-value: `displayTriangles[0][0][1] //y-value of the Point with the ID 0`
+
 The order in which you cut each side of the triangle is up to you. In my example, however, it starts with the left edge, continues with the top edge, continues with the right edge and ends with the bottom edge. So after all the new triangles have been stored in `trianglestolookleft`, this is passed to the top edge to cut all the triangles on top again, and any new or ignored triangles are returned to `trianglestolooktop`. This continues until every triangle at the bottom has been clipped and all new triangles, including those created at the bottom, are finally stored in `trianglestolookbottom', which is why it can now be returned. This last array contains all the triangles that could be generated from this one triangle.
 
 At each edge, the arrays of insidePoints and outsidePoints must be reset in order to reuse them at the new edge. In Gamemaker this works by setting the arrays back to `[]`:
@@ -202,9 +217,8 @@ insidePoints = [];
 outsidePoints = [];
 ```
 <br />
-Es kann verwirrend werden mit so vielen Listen oder Arrays inneinander zu haben
-Um zu überprüfen welcher Punkt ausserhalb eines jeweiligen Randes festzustellen braucht es simple If-statements.
 
+Simple if-statements are needed to check which point is outside a particular boundary:
 ```
 //Left border
 if(triangleToClip[0][0] >= 0) array_push(insidePoints, triangleToClip[0]); else array_push(outsidePoints, triangleToClip[0]);
@@ -212,7 +226,20 @@ if(triangleToClip[1][0] >= 0) array_push(insidePoints, triangleToClip[1]); else 
 if(triangleToClip[2][0] >= 0) array_push(insidePoints, triangleToClip[2]); else array_push(outsidePoints, triangleToClip[2]);
 ```
 
-Im folgenden Beispiel
+In this example, it looks at the specific triangle to see if the x values are greater than or equal to 0. This if-statement only works on the left edge because the left edge is at 0 on the x-axis. So if the x-value of the 3 points is greater than or equal to it, it is inside the screen, otherwise it is outside the screen. So the point is added to either `insidePoints` or `outsidePoints`.
+
+To simplify the check, a small length over the outer edge of the screen can be checked to see if it lies within it. This means that we use a second variable to make the entire screen smaller than it is to see whether clipping works. In addition, this value allows us to make the script more changeable. This means that if in the future we decide to reduce or enlarge the size of the screen where the clipping takes place, it can be done easily. In my coding example it looks like this:
+<br />
+<img height="200px" src="/images/screenshot23.png"/><br />
+```
+//Variables
+buffer = 50;
+
+//Left border
+if(triangleToClip[0][0] >= buffer) array_push(insidePoints, triangleToClip[0]); else array_push(outsidePoints, triangleToClip[0]);
+if(triangleToClip[1][0] >= buffer) array_push(insidePoints, triangleToClip[1]); else array_push(outsidePoints, triangleToClip[1]);
+if(triangleToClip[2][0] >= buffer) array_push(insidePoints, triangleToClip[2]); else array_push(outsidePoints, triangleToClip[2]);
+```
 
 <img height="200px" src="/images/screenshot16.png"/>
 <img height="200px" src="/images/screenshot17.png"/> <br />
