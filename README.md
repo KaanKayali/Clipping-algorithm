@@ -12,6 +12,7 @@ Clipping can be done with a few mathematical equations, which are explained in t
 
 ## How it works
 The way it works is not as difficult as it seems. There can be many different triangles that need to go through the same process. Usually all 3 vertices of a triangle have their own id and their own `x` and `y` coordinates. At this point, all their data should be given before clipping.<br />
+<br />
 <img height="200px" src="/images/screenshot5.png"/>
 <img height="200px" src="/images/screenshot8.png"/> 
 <br />
@@ -45,7 +46,6 @@ In pseudocode, each vertex/point of a triangle is checked to see if it is inside
 * **0** points is inside the screen. In this case, the whole triangle is removed.<br />
 * **2** points are inside of the screen. In this case, this triangle needs to get clipped. It returns a quad. In other words: **two** new triangles.<br />
 * **1** point is inside the screen. In this case, this triangle needs to get clipped. It returns **one** new triangle.<br />
-
 <img width="600px" src="/images/screenshot2.png"/> <br />
 <img width="600px" src="/images/screenshot6.png"/> <br />
 
@@ -82,9 +82,11 @@ Calculation in practice:<br />
 2 Vertex inside means 1 vertex outside. 
 If there are two points inside of the screen, we calculate 2 new points that are just on the edge of the screen, so we form a new quad with them. Since each shape is divided into triangles, the quad is divided into two triangles.
 The two points which are inside can be taken over. The remaining point can be ignored after the new two are calculated.<br />
+<br />
 <img height="250px" src="/images/screenshot20.png"/><br />
 <br />
 Calculation in practice:<br />
+<br />
 <img height="250px" src="/images/screenshot11.png"/><br />
 <br />
 
@@ -97,15 +99,19 @@ But there is still a problem. Each triangle has 3 points with different IDs. The
 To calculate the vertex on the edge we should have both of the connecting points inside and outside the border. The point on the edge already has either the `x` or the `y` value, based on the border it lies on.
 For example, if it is at the right or left edge, the `x` component is either the screen width or 0 (assuming the origin 0/0 is at the top or bottom right).
 The line connecting the first two points is similar to the line that would connect the new points. A simple equation can therefore be created using similarity. The horizontal length of the two points can be calculated using the `x` values of the inner and outer points. Do the same with the `y` values for the vertical length. Now we can do the same with the same point on the inside and the point on the edge, where we only know either the `x` or the `y` value. In this case, the value is the width of the screen, since we are working with the right edge in this example. However, as we do not know the `y` value, it is the only value that is unknown and the variable remains.<br />
+<br />
 <img height="200px" src="/images/screenshot13.png"/> <br />
 <br />
 In vertical examples the new vertex is either 0 or the value of the screen height. So in clipping the other variable is the value to calculate in every case.<br />
+<br />
 <img height="250px" src="/images/screenshot12.png"/> <br />
 <br />
 Similarity can now be used to equate the two calculated values. For example, the horizontal length between the first original points divided by the vertical length between the first original points equals the horizontal length between the inner point and the point to be recalculated divided by the vertical length between the inner point and the point to be recalculated.<br />
+<br />
 <img height="250px" src="/images/screenshot14.png"/> <br />
 
 Now we solve for the unknown y-value and we have the equation to calculate the new vertex point exactly. In this way every point on the edge can be calculated. With this equation the hardest part is done and it can now only be reused for clipping.<br />
+<br />
 <img height="250px" src="/images/screenshot15.png"/> <br />
 
 Theoretically, in the case of a vertex inside, it looks something like this when calculating the point:
@@ -230,7 +236,7 @@ if(triangleToClip[2][0] >= 0) array_push(insidePoints, triangleToClip[2]); else 
 
 In this example, it looks at the specific triangle to see if the x values are greater than or equal to 0. This if-statement only works on the left edge because the left edge is at 0 on the x-axis. So if the x-value of the 3 points is greater than or equal to it, it is inside the screen, otherwise it is outside the screen. So the point is added to either `insidePoints` or `outsidePoints`.
 
-To simplify the check, a small length over the outer edge of the screen can be checked to see if it lies within it. This means that we use a second variable to make the entire screen smaller than it is to see whether clipping works. In addition, this value allows us to make the script more changeable. This means that if in the future we decide to reduce or enlarge the size of the screen where the clipping takes place, it can be done easily. In my coding example it looks like this:
+To simplify the check, a small length over the outer edge of the screen can be checked to see if it lies within it. This means that we use a second variable to make the entire screen smaller than it is to see whether clipping works. In addition, this value allows us to make the script more changeable. This means that if in the future we decide to reduce or enlarge the size of the screen where the clipping takes place, it can be done easily. In my coding example it looks like this:<br />
 <br />
 <img height="450px" src="/images/screenshot23.png"/><br />
 ```
@@ -243,6 +249,7 @@ if(triangleToClip[1][0] >= buffer) array_push(insidePoints, triangleToClip[1]); 
 if(triangleToClip[2][0] >= buffer) array_push(insidePoints, triangleToClip[2]); else array_push(outsidePoints, triangleToClip[2]);
 ```
 If you want to check if it is inside at every border, you need to incooperate the buffer everywhere.<br />
+<br />
 <img height="450px" src="/images/screenshot24.png"/><br />
 
 You now need to check for every possible scenario a triangle could be in.
@@ -294,7 +301,7 @@ if(array_length(insidePoints) == 2) && (array_length(outsidePoints) == 1){
 The array at the end of this process now needs to be checked for the next edge using the next for loop. <br />
 For visualisation, the if-statements on each of the edges look like this:
 
-If the point is after those checks always true, it is inside the screen.
+If the point is after those checks always true, it is inside the screen.<br />
 If it is false in one of those, its not.
 
 Left: `if point.x >= buffer` <br />
@@ -311,10 +318,13 @@ Bottom: `if point.y <= scrheight-buffer` <br />
 
 The temporary arrays such as `trianglestolookleft` do not need to be reset in the function, as the arrays are automatically set to `[]` for each triangle.
 When I run my script in gamemaker it looks like this:<br />
+<br />
 <img height="225px" src="/images/video1.gif"/> <img height="225px" src="/images/video2.gif"/> <br />
 
 When you have finished and tested the function, remember to set your buffer to 0 so that the clipping is not visible to the user.
+<br />
 <img height="300px" src="/images/screenshot29.png"/> <br />
-
-Only if you want to, of course!
+<br />
+You can find the final version of it in the script.<br />
+Only if you want to, of course!<br />
 I hope this helped.
