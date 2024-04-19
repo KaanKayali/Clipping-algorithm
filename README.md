@@ -241,4 +241,51 @@ if(triangleToClip[1][0] >= buffer) array_push(insidePoints, triangleToClip[1]); 
 if(triangleToClip[2][0] >= buffer) array_push(insidePoints, triangleToClip[2]); else array_push(outsidePoints, triangleToClip[2]);
 ```
 
+You now need to check for every possible scenario a triangle could be in.
+
+* If array_length(insidepoints) = 3 -> Already into the next array
+
+* No need to check if its 0. I wont do anything if it has. The triangle just gets ignored and wont render at all
+
+* If array_length(insidepoints) = 1 -> Form triangle and add the new calculated triangles
+
+* If array_length(insidepoints) = 2 -> Form quad and add 2 new calculated triangles
+
+We have everything we need. We need to add the calculations we learned from [1 Vertex inside](#1-vertex-inside) and [2 Vertexes inside](#2-vertexes-inside).
+So in the end it looks like this for the left border:
+```
+//All points lie on the inside
+if(array_length(insidePoints) == 3) array_push(trianglestolookleft, triangleToClip);
+
+//Create new small triangle
+if(array_length(insidePoints) == 1) && (array_length(outsidePoints) == 2){
+	var newpoint0 = insidePoints[0];
+	var newscr1 = ((buffer - outsidePoints[0][0]) * (outsidePoints[0][1] - insidePoints[0][1]))/(outsidePoints[0][0] - insidePoints[0][0]);
+	var newscr2 = ((buffer - outsidePoints[1][0]) * (outsidePoints[1][1] - insidePoints[0][1]))/(outsidePoints[1][0] - insidePoints[0][0]);
+	var newpoint1 = [buffer, outsidePoints[0][1] + newscr1];
+	var newpoint2 = [buffer, outsidePoints[1][1] + newscr2];
+
+	var newtriangle = [newpoint0, newpoint1, newpoint2];
+	array_push(trianglestolookleft, newtriangle);
+}
+
+//Create new quad aka 2 triangles
+if(array_length(insidePoints) == 2) && (array_length(outsidePoints) == 1){
+	var newpoint0 = insidePoints[0];
+	var newpoint1 = insidePoints[1];
+
+	var newscr2 = ((buffer - insidePoints[0][0]) * (outsidePoints[0][1] - insidePoints[0][1]))/(outsidePoints[0][0] - insidePoints[0][0]);
+	var newscr3 = ((buffer - insidePoints[1][0]) * (outsidePoints[0][1] - insidePoints[1][1]))/(outsidePoints[0][0] - insidePoints[1][0]);
+
+	var newpoint2 = [buffer, insidePoints[0][1] + newscr2];
+	var newpoint3 = [buffer, insidePoints[1][1] + newscr3];
+
+	var newtriangle0 = [newpoint0, newpoint1, newpoint2];
+	var newtriangle1 = [newpoint1, newpoint2, newpoint3];
+	array_push(trianglestolookleft, newtriangle0);
+	array_push(trianglestolookleft, newtriangle1);
+}
+
+```
+
 <img height="200px" src="/images/screenshot16.png"/> <img height="200px" src="/images/screenshot17.png"/> <br />
