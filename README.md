@@ -255,34 +255,34 @@ We have everything we need. We need to add the calculations we learned from [1 V
 So in the end it looks like this for the left border:
 ```
 //All points lie on the inside
-if(array_length(insidePoints) == 3) array_push(trianglestolookleft, triangleToClip);
+if(array_length(insidePoints) == 3) array_push(trianglestolookleft, triangleToClip); //Take over the triangle
 
 //Create new small triangle
 if(array_length(insidePoints) == 1) && (array_length(outsidePoints) == 2){
-	var newpoint0 = insidePoints[0];
-	var newscr1 = ((buffer - outsidePoints[0][0]) * (outsidePoints[0][1] - insidePoints[0][1]))/(outsidePoints[0][0] - insidePoints[0][0]);
-	var newscr2 = ((buffer - outsidePoints[1][0]) * (outsidePoints[1][1] - insidePoints[0][1]))/(outsidePoints[1][0] - insidePoints[0][0]);
-	var newpoint1 = [buffer, outsidePoints[0][1] + newscr1];
+	var newpoint0 = insidePoints[0]; //Take over the point that is inside
+	var newscr1 = ((buffer - outsidePoints[0][0]) * (outsidePoints[0][1] - insidePoints[0][1]))/(outsidePoints[0][0] - insidePoints[0][0]); //Linear interpolate
+	var newscr2 = ((buffer - outsidePoints[1][0]) * (outsidePoints[1][1] - insidePoints[0][1]))/(outsidePoints[1][0] - insidePoints[0][0]); //Linear interpolate
+	var newpoint1 = [buffer, outsidePoints[0][1] + newscr1]; //Calculate the new points which lie right on the border
 	var newpoint2 = [buffer, outsidePoints[1][1] + newscr2];
 
-	var newtriangle = [newpoint0, newpoint1, newpoint2];
-	array_push(trianglestolookleft, newtriangle);
+	var newtriangle = [newpoint0, newpoint1, newpoint2]; //Set new triangle with the new points
+	array_push(trianglestolookleft, newtriangle); //Add triangle to temporary array to continue this process with the other borders later
 }
 
 //Create new quad aka 2 triangles
 if(array_length(insidePoints) == 2) && (array_length(outsidePoints) == 1){
-	var newpoint0 = insidePoints[0];
+	var newpoint0 = insidePoints[0]; //Take over the two points that are inside
 	var newpoint1 = insidePoints[1];
 
-	var newscr2 = ((buffer - insidePoints[0][0]) * (outsidePoints[0][1] - insidePoints[0][1]))/(outsidePoints[0][0] - insidePoints[0][0]);
-	var newscr3 = ((buffer - insidePoints[1][0]) * (outsidePoints[0][1] - insidePoints[1][1]))/(outsidePoints[0][0] - insidePoints[1][0]);
+	var newscr2 = ((buffer - insidePoints[0][0]) * (outsidePoints[0][1] - insidePoints[0][1]))/(outsidePoints[0][0] - insidePoints[0][0]); //Linear interpolate
+	var newscr3 = ((buffer - insidePoints[1][0]) * (outsidePoints[0][1] - insidePoints[1][1]))/(outsidePoints[0][0] - insidePoints[1][0]); //Linear interpolate
 
-	var newpoint2 = [buffer, insidePoints[0][1] + newscr2];
+	var newpoint2 = [buffer, insidePoints[0][1] + newscr2]; //Calculate the new points which lie right on the border
 	var newpoint3 = [buffer, insidePoints[1][1] + newscr3];
 
-	var newtriangle0 = [newpoint0, newpoint1, newpoint2];
+	var newtriangle0 = [newpoint0, newpoint1, newpoint2]; //Set both triangle with the new points
 	var newtriangle1 = [newpoint1, newpoint2, newpoint3];
-	array_push(trianglestolookleft, newtriangle0);
+	array_push(trianglestolookleft, newtriangle0); //Add both triangles to temporary array to continue this process with the other borders later
 	array_push(trianglestolookleft, newtriangle1);
 }
 
