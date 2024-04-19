@@ -323,10 +323,10 @@ When I run my script in gamemaker it looks like this:<br />
 <br />
 <img height="225px" src="/images/video1.gif"/> <img height="225px" src="/images/video2.gif"/> <br />
 
-When you have finished and tested the function, remember to set your buffer to 0 so that the clipping is not visible to the user.
+When you have finished and tested the function, remember to set your buffer to 0 so that the clipping is not visible to the user.<br />
+Only if you want to, of course!<br />
 <br />
 <img height="300px" src="/images/screenshot29.png"/> <br />
 <br />
 You can find the final version of it in the script.<br />
-Only if you want to, of course!<br />
 I hope this helped.
