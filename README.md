@@ -112,6 +112,8 @@ Theoretically, in the case of a vertex inside, it looks something like this when
 <img height="250px" src="/images/screenshot9.png"/> <br />
 <br />
 
+As it looks when calculating the point on the vertical, it is exactly the other way round. All x and y values are inverted and instead of the screenwidth it is now the screenheight.
+
 ## Code
 It is essential to define your border so your program knows where it should clip.
 In gamemaker the origin is again at the top left.<br />
@@ -307,4 +309,12 @@ Right: `if point.x <= scrwidth-buffer` <br />
 Bottom: ``if point.y <= scrheight-buffer`` <br />
 <img height="250px" src="/images/screenshot28.png"/><br />
 
-<img height="200px" src="/images/screenshot16.png"/> <img height="200px" src="/images/screenshot17.png"/> <br />
+The temporary arrays such as `trianglestolookleft` do not need to be reset in the function, as the arrays are automatically set to `[]` for each triangle.
+When I run my script in gamemaker it looks like this:
+
+
+When you have finished and tested the function, remember to set your buffer to 0 so that the clipping is not visible to the user.
+<img height="200px" src="/images/screenshot29.png"/> <br />
+
+Only if you want to, of course!
+I hope this helped.
