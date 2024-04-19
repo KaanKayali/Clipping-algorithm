@@ -118,7 +118,7 @@ In gamemaker the origin is again at the top left.<br />
 screen width: 1280
 screen height: 720
 <br />
-<img height="200px" src="/images/screenshot22.png"/><br />
+<img height="450px" src="/images/screenshot22.png"/><br />
 <br />
 
 The clipping algorithm itself is just in the function. Gamemaker treats arrays like C# lists. They can be enlarged or reduced as required depending on the number of given values. A triangle can be saved as an object, as a struct, as an array (scalable) or as a list.
@@ -230,7 +230,7 @@ In this example, it looks at the specific triangle to see if the x values are gr
 
 To simplify the check, a small length over the outer edge of the screen can be checked to see if it lies within it. This means that we use a second variable to make the entire screen smaller than it is to see whether clipping works. In addition, this value allows us to make the script more changeable. This means that if in the future we decide to reduce or enlarge the size of the screen where the clipping takes place, it can be done easily. In my coding example it looks like this:
 <br />
-<img height="200px" src="/images/screenshot23.png"/><br />
+<img height="450px" src="/images/screenshot23.png"/><br />
 ```
 //Variables
 buffer = 50;
@@ -241,5 +241,4 @@ if(triangleToClip[1][0] >= buffer) array_push(insidePoints, triangleToClip[1]); 
 if(triangleToClip[2][0] >= buffer) array_push(insidePoints, triangleToClip[2]); else array_push(outsidePoints, triangleToClip[2]);
 ```
 
-<img height="200px" src="/images/screenshot16.png"/>
-<img height="200px" src="/images/screenshot17.png"/> <br />
+<img height="200px" src="/images/screenshot16.png"/> <img height="200px" src="/images/screenshot17.png"/> <br />
