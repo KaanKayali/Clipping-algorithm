@@ -201,6 +201,18 @@ At each edge, the arrays of insidePoints and outsidePoints must be reset in orde
 insidePoints = [];
 outsidePoints = [];
 ```
+<br />
+Es kann verwirrend werden mit so vielen Listen oder Arrays inneinander zu haben
+Um zu überprüfen welcher Punkt ausserhalb eines jeweiligen Randes festzustellen braucht es simple If-statements.
 
-<img height="250px" src="/images/screenshot16.png"/>
-<img height="250px" src="/images/screenshot17.png"/> <br />
+```
+//Left border
+if(triangleToClip[0][0] >= 0) array_push(insidePoints, triangleToClip[0]); else array_push(outsidePoints, triangleToClip[0]);
+if(triangleToClip[1][0] >= 0) array_push(insidePoints, triangleToClip[1]); else array_push(outsidePoints, triangleToClip[1]);
+if(triangleToClip[2][0] >= 0) array_push(insidePoints, triangleToClip[2]); else array_push(outsidePoints, triangleToClip[2]);
+```
+
+Im folgenden Beispiel
+
+<img height="200px" src="/images/screenshot16.png"/>
+<img height="200px" src="/images/screenshot17.png"/> <br />
