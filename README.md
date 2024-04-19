@@ -46,6 +46,7 @@ In pseudocode, each vertex/point of a triangle is checked to see if it is inside
 * **0** points is inside the screen. In this case, the whole triangle is removed.<br />
 * **2** points are inside of the screen. In this case, this triangle needs to get clipped. It returns a quad. In other words: **two** new triangles.<br />
 * **1** point is inside the screen. In this case, this triangle needs to get clipped. It returns **one** new triangle.<br />
+<br />
 <img width="600px" src="/images/screenshot2.png"/> <br />
 <img width="600px" src="/images/screenshot6.png"/> <br />
 
@@ -73,7 +74,8 @@ Let's look at the cases where only one or two points of the triangle lie within 
 1 Vertex inside means 2 vertexes outside. 
 If there is only 1 point inside the screen, we calculate 2 new points that are just on the edge of the screen, so we form a new triangle with them.
 The point which is inside can be taken over. The remaining points are ignored after the new two are calculated using linear interpolation.<br />
-<img height="200px" src="/images/screenshot19.png"/> <img height="200px" src="/images/screenshot7.png"/> <br />
+<br />
+<img height="150px" src="/images/screenshot19.png"/> <img height="150px" src="/images/screenshot7.png"/> <br />
 <br />
 Calculation in practice:<br />
 <img height="250px" src="/images/screenshot10.png"/><br />
