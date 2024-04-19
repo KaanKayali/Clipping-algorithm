@@ -11,7 +11,7 @@ Clipping can be done with a few mathematical equations, which are explained in t
 <br />
 
 ## How it works
-The way it works is not as difficult as it seems. There can be many different triangles that need to go through the same process. Usually all 3 vertices of a triangle have their own id and their own x and y coordinates. At this point, all their data should be given before clipping.<br />
+The way it works is not as difficult as it seems. There can be many different triangles that need to go through the same process. Usually all 3 vertices of a triangle have their own id and their own `x` and `y` coordinates. At this point, all their data should be given before clipping.<br />
 <img height="200px" src="/images/screenshot5.png"/>
 <img height="200px" src="/images/screenshot8.png"/> 
 <br />
@@ -91,10 +91,12 @@ Calculation in practice:<br />
 When this is done, we get back a triangle with new points, which we can use to replace the original triangle when drawing the triangles.
 Following my recommendation, we have two lists. The first list contains all the triads as a struct, array or separate list with the 3 dots. The second list is filled with each triangle that has gone through the clipping process. So at the end of all the calculations of each triangle, the second list contains all the triangles that are now on the image.
 
+But there is still a problem. Each triangle has 3 points with different IDs. The points are always addressed by their IDs. So what if it is not exactly point 1 and point 2 that are out, but the point with ID 0? You would have to check whether the points can be clipped individually for each scenario. This is very cumbersome, but can be easily avoided by not enumerating a simple integer when a vertex is inside or outside. They can also be scalable arrays or lists in which the points themselves are added. Then the number of points inside or outside is the length of the arrays or lists. When clipping, you simply use the points from these arrays and lists and not from the original arrays or lists. For example, you can first cache the `insidePoints` and `outsidePoints` arrays. Then add the point with the ID 2 into `insidePoints` as a whole and the other two outside points with the IDs 0 and 1 into `outsidePoints`. Now you have assigned exactly the points that are inside and outside and you no longer have to work with the IDs but can calculate more easily with the values directly from `insidePoints` and `outsidePoints`. This is also how it was solved in my example script.
+
 ## Linear interpolation
-To calculate the vertex on the edge we should have both of the connecting points inside and outside the border. The point on the edge already has either the x or the y value, based on the border it lies on.
-For example, if it is at the right or left edge, the x component is either the screen width or 0 (assuming the origin 0/0 is at the top or bottom right).
-The line connecting the first two points is similar to the line that would connect the new points. A simple equation can therefore be created using similarity. The horizontal length of the two points can be calculated using the x values of the inner and outer points. Do the same with the y values for the vertical length. Now we can do the same with the same point on the inside and the point on the edge, where we only know either the x or the y value. In this case, the value is the width of the screen, since we are working with the right edge in this example. However, as we do not know the y value, it is the only value that is unknown and the variable remains.<br />
+To calculate the vertex on the edge we should have both of the connecting points inside and outside the border. The point on the edge already has either the `x` or the `y` value, based on the border it lies on.
+For example, if it is at the right or left edge, the `x` component is either the screen width or 0 (assuming the origin 0/0 is at the top or bottom right).
+The line connecting the first two points is similar to the line that would connect the new points. A simple equation can therefore be created using similarity. The horizontal length of the two points can be calculated using the `x` values of the inner and outer points. Do the same with the `y` values for the vertical length. Now we can do the same with the same point on the inside and the point on the edge, where we only know either the `x` or the `y` value. In this case, the value is the width of the screen, since we are working with the right edge in this example. However, as we do not know the `y` value, it is the only value that is unknown and the variable remains.<br />
 <img height="200px" src="/images/screenshot13.png"/> <br />
 <br />
 In vertical examples the new vertex is either 0 or the value of the screen height. So in clipping the other variable is the value to calculate in every case.<br />
@@ -111,8 +113,8 @@ Theoretically, in the case of a vertex inside, it looks something like this when
 <br />
 
 ## Code
-The clipping-algorithm itself is just in the function. Gamemaker behandelt Arrays wie C# Listen. Sie sind beliebig vergrösser oder verkleinerbar je nach Anzahl gegebenen Werten. Ein Dreieck kann als Objekt, als Struct, als Array (Skalierbar) oder als Liste gespeichert werden.
-Jedes Dreieck hat genau 3 Punkte, somit 3 x und y Werte. Ein Beispieldreieck in meinem Code sieht so aus:
+The clipping algorithm itself is just in the function. Gamemaker treats arrays like C# lists. They can be enlarged or reduced as required depending on the number of given values. A triangle can be saved as an object, as a struct, as an array (scalable) or as a list.
+Each triangle has exactly 3 points, thus 3 `x` and `y` values. A sample triangle in my code looks like this:
 ```
 //Array in gamemaker
 exampletriangle = [
@@ -121,7 +123,7 @@ exampletriangle = [
 	[200, 600],
 ];
 ```
-Als struct würde es übersehlicher sein, aber bei der Benutzung eines Structes ist es nicht möglich in Gamemaker durch die Werte durch zu loopen:
+As a struct it would be easier to work with the `x` and `y` values, but when using a struct it is not possible to loop through the values. At least not in Gamemaker:
 ```
 //Struct
 exampletriangle = {
@@ -142,5 +144,63 @@ exampletriangle = {
 
 ```
 
-<img height="250px" src="/images/screenshot16.png"/> <br />
+To display many triangles at once, even in shapes, you can either save each triangle as an object and loop through the objects. You can also, as in my example code, store the triangles in a declarable array or list and loop through them. If there are not too many triangles, it is not necessary to loop through them in the code. For each triangle, the clip function is called and stored as a new variable containing the correct triangle, clipped at each edge and ready to display. In my code these are again stored in a new array.
+
+```
+//Define variables
+displayTriangles = [];
+exampletriangle = [
+	[300, 300],
+	[700, 500],
+	[200, 600],
+];
+
+array_push(displayTriangles, exampletriangle);
+
+//Clipping list
+for(var i = 0; i < array_length(displayTriangles); i++) {
+    var clippedTriangles = clipTriangle(displayTriangles[i]); //Clipping progress
+
+    //Into an array/list
+    for (var j = 0; j < array_length(clippedTriangles); j++) array_push(renderTriangles, clippedTriangles[j]);
+
+}
+
+//renderTriangles now has every triangle in it. Each triangle has been clipped at this point and is now ready to be rendered
+```
+
+All that remains to be programmed is the clipping algorithm itself, which treats each triangle individually in the `clipFunction` function. 
+A few new variables and arrays are defined in this function:
+```
+//Clipp triangle
+function clipTriangle(triangle) {
+    	var triangleToClip = triangle; 
+	var insidePoints = []; //Insidepoints to store every point which is inside the screen
+	var outsidePoints = []; //Outsidepoints to store every point which is outside of the screen
+
+	//Temporary arrays in order to store every new triangle after getting clipped
+	//For each border one array
+	var trianglestolookleft = []; 
+	var trianglestolooktop = [];
+	var trianglestolookright = [];
+	var trianglestolookbottom = [];
+
+	//Clipping...
+
+
+	//Returning the last array after going through every border
+	return trianglestolookbottom;
+
+}
+```
+
+The order in which you cut each side of the triangle is up to you. In my example, however, it starts with the left edge, continues with the top edge, continues with the right edge and ends with the bottom edge. So after all the new triangles have been stored in `trianglestolookleft`, this is passed to the top edge to cut all the triangles on top again, and any new or ignored triangles are returned to `trianglestolooktop`. This continues until every triangle at the bottom has been clipped and all new triangles, including those created at the bottom, are finally stored in `trianglestolookbottom', which is why it can now be returned. This last array contains all the triangles that could be generated from this one triangle.
+
+At each edge, the arrays of insidePoints and outsidePoints must be reset in order to reuse them at the new edge. In Gamemaker this works by setting the arrays back to `[]`:
+```
+insidePoints = [];
+outsidePoints = [];
+```
+
+<img height="250px" src="/images/screenshot16.png"/>
 <img height="250px" src="/images/screenshot17.png"/> <br />
