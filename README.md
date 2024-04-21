@@ -133,7 +133,7 @@ screen height: 720
 
 The clipping algorithm itself is just in the function. Gamemaker treats arrays like C# lists. They can be enlarged or reduced as required depending on the number of given values. A triangle can be saved as an object, as a struct, as an array (scalable) or as a list.
 Each triangle has exactly 3 points, thus 3 `x` and `y` values. A sample triangle in my code looks like this:
-```
+```gml
 //Array in gamemaker
 exampletriangle = [
 	[300, 300],
@@ -142,7 +142,7 @@ exampletriangle = [
 ];
 ```
 As a struct it would be easier to work with the `x` and `y` values, but when using a struct it is not possible to loop through the values. At least not in Gamemaker:
-```
+```gml
 //Struct
 exampletriangle = {
 	point0 : {
@@ -164,7 +164,7 @@ exampletriangle = {
 
 To display many triangles at once, even in shapes, you can either save each triangle as an object and loop through the objects. You can also, as in my example code, store the triangles in a declarable array or list and loop through them. If there are not too many triangles, it is not necessary to loop through them in the code. For each triangle, the clip function is called and stored as a new variable containing the correct triangle, clipped at each edge and ready to display. In my code these are again stored in a new array.
 
-```
+```gml
 //Define variables
 displayTriangles = [];
 exampletriangle = [
@@ -189,7 +189,7 @@ for(var i = 0; i < array_length(displayTriangles); i++) {
 
 All that remains to be programmed is the clipping algorithm itself, which treats each triangle individually in the `clipFunction` function. 
 A few new variables and arrays are defined in this function:
-```
+```gml
 //Clipp triangle
 function clipTriangle(triangle) {
     	var triangleToClip = triangle; 
@@ -222,14 +222,14 @@ y-value: `displayTriangles[0][0][1] //y-value of the Point with the ID 0`
 The order in which you cut each side of the triangle is up to you. In my example, however, it starts with the left edge, continues with the top edge, continues with the right edge and ends with the bottom edge. So after all the new triangles have been stored in `trianglestolookleft`, this is passed to the top edge to cut all the triangles on top again, and any new or ignored triangles are returned to `trianglestolooktop`. This continues until every triangle at the bottom has been clipped and all new triangles, including those created at the bottom, are finally stored in `trianglestolookbottom', which is why it can now be returned. This last array contains all the triangles that could be generated from this one triangle.
 
 At each edge, the arrays of insidePoints and outsidePoints must be reset in order to reuse them at the new edge. In Gamemaker this works by setting the arrays back to `[]`:
-```
+```gml
 insidePoints = [];
 outsidePoints = [];
 ```
 <br />
 
 Simple if-statements are needed to check which point is outside a particular boundary:
-```
+```gml
 //Left border
 if(triangleToClip[0][0] >= 0) array_push(insidePoints, triangleToClip[0]); else array_push(outsidePoints, triangleToClip[0]);
 if(triangleToClip[1][0] >= 0) array_push(insidePoints, triangleToClip[1]); else array_push(outsidePoints, triangleToClip[1]);
@@ -241,7 +241,7 @@ In this example, it looks at the specific triangle to see if the x values are gr
 To simplify the check, a small length over the outer edge of the screen can be checked to see if it lies within it. This means that we use a second variable to make the entire screen smaller than it is to see whether clipping works. In addition, this value allows us to make the script more changeable. This means that if in the future we decide to reduce or enlarge the size of the screen where the clipping takes place, it can be done easily. In my coding example it looks like this:<br />
 <br />
 <img height="450px" src="/images/screenshot23.png"/><br />
-```
+```gml
 //Variables
 buffer = 50;
 
@@ -266,7 +266,7 @@ You now need to check for every possible scenario a triangle could be in.
 
 We have everything we need. We need to add the calculations we learned from [1 Vertex inside](#1-vertex-inside) and [2 Vertexes inside](#2-vertexes-inside).
 So in the end it looks like this for the left border:
-```
+```gml
 //All points lie on the inside
 if(array_length(insidePoints) == 3) array_push(trianglestolookleft, triangleToClip); //Take over the triangle
 
